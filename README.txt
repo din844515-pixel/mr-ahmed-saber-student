@@ -26,3 +26,4 @@ MR. Ahmed Saber — CLEAN FINAL FIXED BUILD
 
 
 Teacher access: the teacher login is hidden from students. Open the same site with ?teacher=1 to show the teacher login button. The teacher email is no longer prefilled.
+. 
