@@ -50,7 +50,13 @@
     for(const card of cards){
       const checked=[...card.querySelectorAll('input[type=checkbox]:checked')];
       if(checked.length!==2){alert('كل سؤال "اختار إجابتين صحيحتين" يجب أن يحتوي على إجابتين بالضبط.');return;}
-      checked.forEach((c,idx)=>{const r=document.createElement('input');r.type='radio';r.name=c.name.replace(/\[\]$/,'');r.value=c.value;r.checked=true;r.style.display='none';card.appendChild(r);temp.push(r);});
+      r.type='radio';
+r.name=checked[0].name.replace(/\[\]$/,'');
+r.value=JSON.stringify(checked.map(c=>String(c.value)));
+r.checked=true;
+r.style.display='none';
+;card.appendChild(r)
+;temp.push(r)
     }
     try{await originalSubmit(examId,auto);}finally{temp.forEach(x=>x.remove());}
   };
