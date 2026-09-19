@@ -242,6 +242,11 @@ async function startStudentExam(examId){
    const kind=String(cd.kind||'').toLowerCase();
    const isReading=kind==='reading', isStory=kind==='story', isFindCorrect=kind==='find_correct', isComplete=kind==='complete', isRewrite=kind==='rewrite', isGroup=isReading||isStory||isFindCorrect||isComplete||isRewrite||qt==='written_group';
    const isEssay=['essay','written','مقالي'].includes(qt);
+  const isMulti=qt==='multi_mcq';
+if(isMulti){
+  const opts=Array.isArray(q.options)?q.options:[];
+  return '<div class="questionCard multiMcqCard" data-qid="'+q.id+'"><div class="sectionTitle"><b>'+(i+1)+'. '+esc(q.question||q.question_text||'')+'</b><span class="badge">اختار إجابتين صحيحتين</span></div><div class="multiMcqNote" style="font-weight:700;margin:6px 0">مطلوب اختيار إجابتين بالضبط. <span class="multiCount">0 / 2</span></div>'+opts.map(o=>'<label class="option"><input type="checkbox" name="q_'+q.id+'[]" value="'+esc(String(o.key||''))+'" onchange="const c=this.closest(\'.multiMcqCard\');const n=c.querySelectorAll(\'input[type=checkbox]:checked\').length;if(n>2){this.checked=false;alert(\'يمكن اختيار إجابتين فقط.\');}else{c.querySelector(\'.multiCount\').textContent=n+\' / 2\';}"> '+esc(String(o.text||''))+'</label>').join('')+'</div>';
+}
    if(isGroup){
      const rqs=Array.isArray(cd.questions)?cd.questions:[]; const passage=esc(cd.passage||cd.story||'').replace(/\n/g,'<br>');
      const groupTitle=isStory?'قصة':isReading?'Read the following text, then answer the questions':isFindCorrect?'Find / Correct the mistake':isComplete?'Complete the sentences with the correct form of the words in brackets':'Rewrite the following sentences';
