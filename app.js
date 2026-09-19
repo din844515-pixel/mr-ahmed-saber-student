@@ -275,6 +275,15 @@ async function submitStudentExam(examId,auto=false){
  const attemptId=Number(modal?.dataset?.attemptId||0);
  const answers={};
  document.querySelectorAll('#examQuestions input[type=radio]:checked').forEach(x=>answers[x.name.replace('q_','')]=x.value);
+ const multiCards=[...document.querySelectorAll('#examQuestions .multiMcqCard')];
+for(const card of multiCards){
+  const checked=[...card.querySelectorAll('input[type=checkbox]:checked')];
+  if(checked.length!==2){
+    alert('كل سؤال "اختار إجابتين صحيحتين" يجب أن يحتوي على إجابتين بالضبط.');
+    return;
+  }
+  answers[card.dataset.qid]=JSON.stringify(checked.map(x=>String(x.value)));
+}
  document.querySelectorAll('#examQuestions textarea[data-qid]').forEach(x=>answers[x.dataset.qid]=x.value.trim());
  const convGroups={}; document.querySelectorAll('#examQuestions .conversationBlank').forEach(x=>{(convGroups[x.dataset.qid] ||= []).push([Number(x.dataset.convIndex),x.value.trim()]);});
  Object.entries(convGroups).forEach(([qid,list])=>{list.sort((a,b)=>a[0]-b[0]); answers[qid]=JSON.stringify(list.map(x=>x[1]));});
